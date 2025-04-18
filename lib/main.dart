@@ -5,9 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:quizapp/quiz.dart';
 import 'dart:math';
 
-void main() => runApp(MyApp());
+void main() => runApp(QuizApp());
 
-class MyApp extends StatelessWidget {
+class QuizApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
