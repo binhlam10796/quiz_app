@@ -1,13 +1,16 @@
 class Quiz {
-  int responseCode;
-  List<Results> results;
+  late int responseCode;
+  late List<Results> results;
 
-  Quiz({this.responseCode, this.results});
+  Quiz({
+    required this.responseCode,
+    required this.results,
+  });
 
   Quiz.fromJson(Map<String, dynamic> json) {
     responseCode = json['response_code'];
     if (json['results'] != null) {
-      results = new List<Results>();
+      results = [];
       json['results'].forEach((v) {
         results.add(new Results.fromJson(v));
       });
@@ -17,20 +20,18 @@ class Quiz {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['response_code'] = this.responseCode;
-    if (this.results != null) {
-      data['results'] = this.results.map((v) => v.toJson()).toList();
-    }
-    return data;
+    data['results'] = this.results.map((v) => v.toJson()).toList();
+      return data;
   }
 }
 
 class Results {
-  String category;
-  String type;
-  String difficulty;
-  String question;
-  String correctAnswer;
-  List<String> allAnswers;
+  String? category;
+  String? type;
+  String? difficulty;
+  String? question;
+  String? correctAnswer;
+  List<String>? allAnswers;
 
   Results({
     this.category,
@@ -38,7 +39,7 @@ class Results {
     this.difficulty,
     this.question,
     this.correctAnswer,
-  });
+  }) : allAnswers = [];
 
   Results.fromJson(Map<String, dynamic> json) {
     category = json['category'];
@@ -47,8 +48,8 @@ class Results {
     question = json['question'];
     correctAnswer = json['correct_answer'];
     allAnswers = json['incorrect_answers'].cast<String>();
-    allAnswers.add(correctAnswer);
-    allAnswers.shuffle();
+    allAnswers?.add(correctAnswer ?? '');
+    allAnswers?.shuffle();
   }
 
   Map<String, dynamic> toJson() {

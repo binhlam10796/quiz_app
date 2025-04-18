@@ -24,9 +24,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Quiz quiz;
-  List<Results> results;
-  Color c;
+  Quiz? quiz;
+  List<Results>? results;
+  Color? c;
   Random random = Random();
   @override
   void initState() {
@@ -34,12 +34,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> fetchQuestions() async {
-    var res = await http.get("https://opentdb.com/api.php?amount=20");
+    var res = await http.get(Uri.parse('"https://opentdb.com/api.php?amount=20"'));
     var decRes = jsonDecode(res.body);
     print(decRes);
     c = Colors.black;
     quiz = Quiz.fromJson(decRes);
-    results = quiz.results;
+    results = quiz?.results;
   }
 
   @override
@@ -66,8 +66,7 @@ class _HomePageState extends State<HomePage> {
                   if (snapshot.hasError) return errorData(snapshot);
                   return questionList();
               }
-              return null;
-            }),
+            },),
       ),
     );
   }
@@ -84,9 +83,9 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             height: 20.0,
           ),
-          RaisedButton(
+          InkWell(
             child: Text("Try Again"),
-            onPressed: () {
+            onTap: () {
               fetchQuestions();
               setState(() {});
             },
@@ -98,7 +97,7 @@ class _HomePageState extends State<HomePage> {
 
   ListView questionList() {
     return ListView.builder(
-      itemCount: results.length,
+      itemCount: results?.length ?? 0,
       itemBuilder: (context, index) => Card(
             color: Colors.white,
             elevation: 0.0,
@@ -110,7 +109,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Text(
-                      results[index].question,
+                      results?[index].question ?? '',
                       style: TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold,
@@ -122,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                         children: <Widget>[
                           FilterChip(
                             backgroundColor: Colors.grey[100],
-                            label: Text(results[index].category),
+                            label: Text(results?[index].category ?? ''),
                             onSelected: (b) {},
                           ),
                           SizedBox(
@@ -131,7 +130,7 @@ class _HomePageState extends State<HomePage> {
                           FilterChip(
                             backgroundColor: Colors.grey[100],
                             label: Text(
-                              results[index].difficulty,
+                              results?[index].difficulty ?? '',
                             ),
                             onSelected: (b) {},
                           )
@@ -143,10 +142,10 @@ class _HomePageState extends State<HomePage> {
               ),
               leading: CircleAvatar(
                 backgroundColor: Colors.grey[100],
-                child: Text(results[index].type.startsWith("m") ? "M" : "B"),
+                child: Text((results?[index].type ?? '').startsWith("m") ? "M" : "B"),
               ),
-              children: results[index].allAnswers.map((m) {
-                return AnswerWidget(results, index, m);
+              children: (results?[index].allAnswers ?? []).map((m) {
+                return AnswerWidget(results ?? [], index, m);
               }).toList(),
             ),
           ),
