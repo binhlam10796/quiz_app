@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> fetchQuestions() async {
-    var res = await http.get(Uri.parse('"https://opentdb.com/api.php?amount=20"'));
+    var res = await http.get(Uri.parse('https://opentdb.com/api.php?amount=20'));
     var decRes = jsonDecode(res.body);
     print(decRes);
     c = Colors.black;

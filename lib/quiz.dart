@@ -19,8 +19,8 @@ class Quiz {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['response_code'] = this.responseCode;
-    data['results'] = this.results.map((v) => v.toJson()).toList();
+    data['response_code'] = responseCode;
+    data['results'] = results.map((v) => v.toJson()).toList();
       return data;
   }
 }
